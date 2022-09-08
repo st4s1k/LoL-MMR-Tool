@@ -1,0 +1,25 @@
+<p>match-data works!</p>
+<button type="button" class="btn btn-primary" (click)="showParticipants()">Load</button>
+
+<input type="text" [(ngModel)]="matchUrl">
+
+<div>
+    {{ participants }}
+</div>
+
+<!-- <div class="container text-center">
+    <div class="row" *ngFor="let matchDataRow of matchDataRows">
+        <div class="col">
+            {{ matchDataRow.team1.summonerName }}
+        </div>
+        <div class="col">
+            {{ matchDataRow.team1.mmr }}
+        </div>
+        <div class="col">
+            {{ matchDataRow.team2.mmr }}
+        </div>
+        <div class="col">
+            {{ matchDataRow.team2.summonerName }}
+        </div>
+    </div>
+</div> -->
