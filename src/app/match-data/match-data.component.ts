@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { OPGGMatchInfo } from 'OPGGMatchInfo';
 import { OPGGService } from '../services/op-gg-service';
 
 interface Summoner {
@@ -28,16 +30,24 @@ interface MatchDataRow {
   styleUrls: ['./match-data.component.css'],
 })
 export class MatchDataComponent implements OnInit {
-  participants: string[] = [];
-  matchUrl: string = 'https://euw.op.gg/summoners/euw/LowZero/matches/xX1o0DE1RCUlMZUTTfVv6LH5uCtPX_iKIKUGWkZKArE%3D/1662494063000';
+  matchInfo: OPGGMatchInfo = {};
+  matchUrlForm = this.formBuilder.group({
+    matchUrl:
+      'https://euw.op.gg/summoners/euw/LowZero/matches/xX1o0DE1RCUcTyLI2XeuU6pOv7XtSbDoM25NfV2anvk%3D/1662756100000',
+  });
 
-  constructor(private opGgService: OPGGService) {}
+  constructor(
+    private opGgService: OPGGService,
+    private formBuilder: FormBuilder
+  ) {}
 
   showParticipants() {
-    if (this.matchUrl.trim().length > 0) {
+    var url = this.matchUrlForm.value?.matchUrl || '';
+    console.log(url);
+    if (url.trim().length > 0) {
       this.opGgService
-        .getMatchParticipants(this.matchUrl)
-        .subscribe((ps) => ps.forEach((p, i) => this.participants.push(p)));
+        .getMatchParticipants(url)
+        .subscribe((matchInfo) => this.matchInfo = matchInfo);
     }
   }
 
