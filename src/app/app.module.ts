@@ -7,6 +7,8 @@ import { AppComponent } from './app.component';
 import { MatchDataComponent } from './match-data/match-data.component';
 import { OPGGService } from './services/op-gg-service';
 import { HttpClientModule } from '@angular/common/http';
+import { WhatIsMyMMRService } from './services/mmr-service';
+import { ScraperService } from './services/scrapper-service';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [OPGGService],
+  providers: [OPGGService, WhatIsMyMMRService, ScraperService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

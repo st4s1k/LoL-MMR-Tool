@@ -1,20 +1,59 @@
 <div class="container" style="border: 2px solid green">
-    <div class="row" style="border: 2px solid blue">
-        <div class="col" style="border: 2px solid cyan">
-            <form [formGroup]="matchUrlForm" (ngSubmit)="showParticipants()">
-                <label for="matchUrl" class="pb-2">Match URL:</label>
-                <div class="input-group mb-3">
-                    <input id="matchUrl" formControlName="matchUrl" type="text" class="form-control" />
-                    <button class="button btn btn-outline-secondary" type="submit">
+  <div class="row" style="border: 2px solid blue">
+    <div class="col" style="border: 2px solid cyan">
+      <form [formGroup]="matchUrlForm" (ngSubmit)="showParticipants()">
+        <label for="matchUrl" class="pb-2">Match URL:</label>
+        <div class="input-group mb-3">
+          <input
+            id="matchUrl"
+            formControlName="matchUrl"
+            type="text"
+            class="form-control"
+          />
+          <button class="button btn btn-outline-secondary" type="submit">
             Load
           </button>
-                </div>
-            </form>
         </div>
+      </form>
     </div>
-    <div class="row" style="border: 2px solid red">
+  </div>
+  <div class="row">
+    <div class="col"></div>
+    <div class="col">Game type:</div>
+    <div class="col">
+      {{ matchDTO.gameType }}
+    </div>
+    <div class="col"></div>
+  </div>
+  <div class="row" style="border: 2px solid red">
+    <div class="col">
+      <div
+        class="row"
+        *ngFor="let matchRow of matchDTO.getRows(matchDTO.gameType)"
+      >
         <div class="col">
-            {{ matchInfo }}
+          {{ matchRow.blue.name }}
         </div>
+        <div class="col">
+          {{ matchRow.blue.mmr }}
+        </div>
+        <div class="col">
+          {{ matchRow.red.mmr }}
+        </div>
+        <div class="col">
+          {{ matchRow.red.name }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col"></div>
+        <div class="col">
+          {{ matchDTO.getAvgMmr(matchDTO.gameType).blue }}
+        </div>
+        <div class="col">
+          {{ matchDTO.getAvgMmr(matchDTO.gameType).red }}
+        </div>
+        <div class="col"></div>
+      </div>
     </div>
+  </div>
 </div>

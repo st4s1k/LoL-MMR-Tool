@@ -18,6 +18,7 @@
         "@angular/platform-browser": "^14.0.0",
         "@angular/platform-browser-dynamic": "^14.0.0",
         "@angular/router": "^14.0.0",
+        "@cloudflare/wrangler": "^1.19.12",
         "bootstrap": "^5.2.1",
         "cheerio": "^1.0.0-rc.12",
         "rxjs": "~7.5.0",
