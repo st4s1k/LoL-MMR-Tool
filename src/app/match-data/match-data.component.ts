@@ -14,8 +14,7 @@ import { PlayerDTO } from '../mmr-table/model/PlayerDTO';
 export class MatchDataComponent implements OnInit {
   public matchDTO: MatchDTO = new MatchDTO();
   public matchUrlForm = this.formBuilder.group({
-    matchUrl:
-      'https://euw.op.gg/summoners/euw/LowZero/matches/xX1o0DE1RCUcTyLI2XeuU6pOv7XtSbDoM25NfV2anvk%3D/1662756100000',
+    matchUrl: '',
   });
 
   constructor(

@@ -1,19 +1,30 @@
 .container {
-  border: 2px solid green;
+  /* border: 2px solid green; */
   padding: 0;
-  margin-top: 5px;;
+  /* margin-top: 5px; */
 }
 
 .container > .row {
-  border: 2px solid blue;
-  margin: 5px;
+  /* border: 2px solid blue; */
+  /* margin: 5px; */
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+.liveMatchDataForm {
+  width: 800px;
+}
+
+#region {
+  width: 100px;
+  flex: none;
+}
+
+/*
 .container > .row > .col,
 .container > .row > .col-auto {
   border: 2px solid red;
   margin: 5px;
 }
+*/

@@ -1,14 +1,18 @@
 <div class="container">
   <div class="row">
-    <div class="col">
+    <div class="col-auto matchDataForm">
       <form [formGroup]="matchUrlForm" (ngSubmit)="getMatchData()">
-        <label for="matchUrl" class="pb-2">Match URL:</label>
+        <label for="matchUrl" class="pb-2">
+          <a target=”_blank” href="https://www.op.gg/">OP.GG</a>
+          Match URL:
+        </label>
         <div class="input-group mb-3">
           <input
             id="matchUrl"
             formControlName="matchUrl"
             type="text"
             class="form-control"
+            placeholder="https://[region].op.gg/summoners/[region]/[summoner_name]/matches/[match_id]/[timestamp]"
           />
           <button class="button btn btn-outline-secondary" type="submit">
             Load

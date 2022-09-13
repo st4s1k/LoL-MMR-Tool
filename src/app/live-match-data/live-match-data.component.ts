@@ -16,7 +16,7 @@ export class LiveMatchDataComponent implements OnInit {
   public regions = ['EUW', 'NA', 'EUNE', 'KR'];
   public matchDTO: MatchDTO = new MatchDTO();
   public summonerNameForm = this.formBuilder.group({
-    summonerName: 'LowZero',
+    summonerName: '',
     region: this.regions[0],
   });
 

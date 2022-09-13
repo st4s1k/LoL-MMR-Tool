@@ -1,16 +1,16 @@
 <div class="container">
   <div class="row">
-    <div class="col">
-      <form [formGroup]="summonerNameForm" (ngSubmit)="getMatchData()">
-        <label for="summonerName" class="pb-2">Summoner name:</label>
-        <div class="input-group mb-3">
+    <div class="col d-flex justify-content-center">
+      <form class="liveMatchDataForm" [formGroup]="summonerNameForm" (ngSubmit)="getMatchData()">
+        <div class="input-group mb-3 mt-3">
           <input
             id="summonerName"
             formControlName="summonerName"
             type="text"
             class="form-control"
+            placeholder="Summoner name"
           />
-          <select class="form-select" formControlName="region">
+          <select id="region" class="form-select" formControlName="region">
             <option *ngFor="let region of regions; first as first">
               {{ region }}
             </option>
