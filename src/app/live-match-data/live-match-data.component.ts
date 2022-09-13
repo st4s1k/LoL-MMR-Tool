@@ -43,10 +43,10 @@ export class LiveMatchDataComponent implements OnInit {
           })
         )
         .subscribe((currentGameInfo) => {
-          console.log(currentGameInfo);
+          // console.log(currentGameInfo);
           const queueId = currentGameInfo.gameQueueConfigId;
           const gameType = this.getGameType(queueId);
-          console.log(`${queueId} ${gameType}`);
+          // console.log(`${queueId} ${gameType}`);
           this.matchDTO = this.populateMatchData(
             currentGameInfo,
             region,

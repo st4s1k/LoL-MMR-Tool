@@ -27,9 +27,9 @@ export class ScraperService {
       })
       .pipe(
         map((scrapperResponse) => {
-          console.log(
-            `Scraper response:\n${JSON.stringify(scrapperResponse, null, 2)}`
-          );
+          // console.log(
+          //   `Scraper response:\n${JSON.stringify(scrapperResponse, null, 2)}`
+          // );
           return scrapperResponse;
         })
       );
@@ -50,9 +50,9 @@ export class ScraperService {
       })
       .pipe(
         map((scrapperResponse) => {
-          console.log(
-            `Proxy response:\n${JSON.stringify(scrapperResponse, null, 2)}`
-          );
+          // console.log(
+          //   `Proxy response:\n${JSON.stringify(scrapperResponse, null, 2)}`
+          // );
           return scrapperResponse;
         })
       );
