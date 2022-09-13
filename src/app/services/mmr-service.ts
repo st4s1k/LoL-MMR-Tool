@@ -11,8 +11,9 @@ export class WhatIsMyMMRService {
     summonerName: string,
     region: string
   ): Observable<WhatIsMyMMRResponse> {
-    const url = `https://${region}.whatismymmr.com/api/v1/summoner?name=${summonerName}`;
-    return this.scraperService.scrape<WhatIsMyMMRResponse>(url).pipe(
+    const urlRegion = region.toLowerCase();
+    const url = `https://${urlRegion}.whatismymmr.com/api/v1/summoner?name=${summonerName}`;
+    return this.scraperService.proxy<WhatIsMyMMRResponse>(url).pipe(
       catchError(() =>
         of({
           ranked: {},

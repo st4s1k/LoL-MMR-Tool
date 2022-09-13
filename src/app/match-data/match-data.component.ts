@@ -3,9 +3,8 @@ import { FormBuilder } from '@angular/forms';
 import { Participant } from 'OPGGMatchInfo';
 import { WhatIsMyMMRService } from '../services/mmr-service';
 import { OPGGService } from '../services/op-gg-service';
-import { MatchDTO } from './model/MatchDTO';
-import { MmrDTO } from './model/MmrDTO';
-import { PlayerDTO } from './model/PlayerDTO';
+import { MatchDTO } from '../mmr-table/model/MatchDTO';
+import { PlayerDTO } from '../mmr-table/model/PlayerDTO';
 
 @Component({
   selector: 'app-match-data',
@@ -13,7 +12,7 @@ import { PlayerDTO } from './model/PlayerDTO';
   styleUrls: ['./match-data.component.css'],
 })
 export class MatchDataComponent implements OnInit {
-  public matchDTO: MatchDTO = {} as MatchDTO;
+  public matchDTO: MatchDTO = new MatchDTO();
   public matchUrlForm = this.formBuilder.group({
     matchUrl:
       'https://euw.op.gg/summoners/euw/LowZero/matches/xX1o0DE1RCUcTyLI2XeuU6pOv7XtSbDoM25NfV2anvk%3D/1662756100000',
@@ -27,19 +26,19 @@ export class MatchDataComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  showParticipants() {
+  getMatchData() {
     var url = this.matchUrlForm.value?.matchUrl || '';
-    console.log(url);
     if (url.trim().length > 0) {
       this.opGGService.getMatchParticipants(url).subscribe((matchInfo) => {
-        console.log(matchInfo);
         let participants = matchInfo.props?.pageProps.game.participants || [];
-        console.log(participants);
         let region = matchInfo.props?.pageProps.region;
         let gameType = matchInfo.props?.pageProps.game.queue_info.game_type;
         if (region && gameType) {
-          this.matchDTO = this.toMatch(participants, region, gameType);
-          console.log(this.matchDTO);
+          this.matchDTO = this.populateMatchData(
+            participants,
+            region,
+            gameType
+          );
         } else {
           console.log(
             `Undefined region [${region}] or game_type [${gameType}]`
@@ -49,30 +48,43 @@ export class MatchDataComponent implements OnInit {
     }
   }
 
-  toMatch(array: Participant[], region: string, gameType: string): MatchDTO {
-    return array.reduce((match, participant) => {
-      let summonerName = participant.summoner.name;
-      let mmr: MmrDTO = new MmrDTO(0, 0, 0);
-      let player: PlayerDTO = new PlayerDTO(summonerName, mmr);
-      this.whatIsMyMMRService
-        .getSummonerMMR(summonerName, region)
-        .subscribe((mmrResponse) => {
-          mmr.rankedAvg = mmrResponse.ranked.avg;
-          mmr.normalAvg = mmrResponse.normal.avg;
-          mmr.aramAvg = mmrResponse.ARAM.avg;
-          console.log(player);
-        });
-      switch (participant.team_key) {
-        case 'RED':
-          match.redTeam.players.push(player);
-          break;
-        case 'BLUE':
-          match.blueTeam.players.push(player);
-          break;
-        default:
-          throw new Error(`Undefined team key ${participant.team_key}`);
-      }
-      return match;
-    }, new MatchDTO(gameType));
+  populateMatchData(
+    participants: Participant[],
+    region: string,
+    gameType: string
+  ): MatchDTO {
+    let matchDTO = new MatchDTO(gameType);
+    participants.forEach((participant) => {
+      const player = this.getPlayer(matchDTO, participant);
+      this.populatePlayerData(player, participant, region);
+    });
+    return matchDTO;
+  }
+
+  populatePlayerData(
+    player: PlayerDTO,
+    participant: Participant,
+    region: string
+  ) {
+    player.name = participant.summoner.name;
+    this.whatIsMyMMRService
+      .getSummonerMMR(player.name, region)
+      .subscribe((mmrResponse) => {
+        player.mmr.rankedAvg = mmrResponse.ranked.avg;
+        player.mmr.normalAvg = mmrResponse.normal.avg;
+        player.mmr.aramAvg = mmrResponse.ARAM.avg;
+      });
+  }
+
+  getPlayer(matchDTO: MatchDTO, participant: Participant): PlayerDTO {
+    const participantIndex = (participant.participant_id - 1) % 5;
+    switch (participant.team_key) {
+      case 'RED':
+        return matchDTO.redTeam.players[participantIndex];
+      case 'BLUE':
+        return matchDTO.blueTeam.players[participantIndex];
+      default:
+        throw new Error(`Undefined team key ${participant.team_key}`);
+    }
   }
 }

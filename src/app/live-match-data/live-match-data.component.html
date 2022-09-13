@@ -1,0 +1,30 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <form [formGroup]="summonerNameForm" (ngSubmit)="getMatchData()">
+        <label for="summonerName" class="pb-2">Summoner name:</label>
+        <div class="input-group mb-3">
+          <input
+            id="summonerName"
+            formControlName="summonerName"
+            type="text"
+            class="form-control"
+          />
+          <select class="form-select" formControlName="region">
+            <option *ngFor="let region of regions; first as first">
+              {{ region }}
+            </option>
+          </select>
+          <button class="button btn btn-outline-secondary" type="submit">
+            Load
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <div class="d-flex justify-content-center">
+      <app-mmr-table [matchDTO]="matchDTO"></app-mmr-table>
+    </div>
+  </div>
+</div>

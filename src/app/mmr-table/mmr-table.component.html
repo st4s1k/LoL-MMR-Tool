@@ -1,0 +1,117 @@
+<div class="container mmrTable">
+  <div class="row mmrTableRow mmrTableHeader">
+    <div
+      class="col textBox"
+      style="background-color: rgb(150, 150, 255); color: white"
+    >
+      Blue Team
+    </div>
+    <div
+      class="col-auto gameTypeCell textBox"
+      style="background-color: rgb(199, 150, 255); color: white"
+    >
+      {{ matchDTO.gameType.toUpperCase() }}
+    </div>
+    <div
+      class="col textBox"
+      style="background-color: rgb(255, 150, 150); color: white"
+    >
+      Red Team
+    </div>
+  </div>
+  <div
+    class="row mmrTableRow"
+    *ngFor="let matchRow of matchDTO.getRows(); index as i"
+  >
+    <div
+      class="col textBox"
+      [ngStyle]="{
+        'background-color':
+          'rgb(' +
+          (200 + i * 10) +
+          ', ' +
+          (200 + i * 10) +
+          ', ' +
+          (255 + i * 10) +
+          ')'
+      }"
+    >
+      {{ matchRow.blue.name }}
+    </div>
+    <div
+      class="col-auto textBox mmrCell"
+      [ngStyle]="{
+        'background-color':
+          'rgb(' +
+          (180 + i * 10) +
+          ', ' +
+          (180 + i * 10) +
+          ', ' +
+          (255 + i * 10) +
+          ')'
+      }"
+    >
+      <div class="d-flex flex-grow-1">
+        <div class="mmrValueCell flex-grow-1">
+          {{ matchRow.blue.mmr ? matchRow.blue.mmr.value : "N/A" }}
+        </div>
+        <div class="mmrSourceCell">
+          {{ matchRow.blue.mmr ? '(' + matchRow.blue.mmr.source + ')' : '' }}
+        </div>
+      </div>
+    </div>
+    <div
+      class="col-auto textBox mmrCell"
+      [ngStyle]="{
+        'background-color':
+          'rgb(' +
+          (255 + i * 10) +
+          ', ' +
+          (180 + i * 10) +
+          ', ' +
+          (180 + i * 10) +
+          ')'
+      }"
+    >
+      <div class="d-flex flex-grow-1">
+        <div class="mmrValueCell flex-grow-1">
+          {{ matchRow.red.mmr ? matchRow.red.mmr.value : "N/A" }}
+        </div>
+        <div class="mmrSourceCell">
+          {{ matchRow.red.mmr ? '(' + matchRow.red.mmr.source + ')' : '' }}
+        </div>
+      </div>
+    </div>
+    <div
+      class="col textBox"
+      [ngStyle]="{
+        'background-color':
+          'rgb(' +
+          (255 + i * 10) +
+          ', ' +
+          (200 + i * 10) +
+          ', ' +
+          (200 + i * 10) +
+          ')'
+      }"
+    >
+      {{ matchRow.red.name }}
+    </div>
+  </div>
+  <div class="row mmrTableRow" style="font-weight: bold">
+    <div class="col textBox">Average team MMR</div>
+    <div
+      class="col-2 textBox mmrCell"
+      style="background-color: rgb(230, 230, 255)"
+    >
+      {{ matchDTO.getAvgMmr().blueTeam }}
+    </div>
+    <div
+      class="col-2 textBox mmrCell"
+      style="background-color: rgb(255, 230, 230)"
+    >
+      {{ matchDTO.getAvgMmr().redTeam }}
+    </div>
+    <div class="col"></div>
+  </div>
+</div>

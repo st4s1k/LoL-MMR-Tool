@@ -1,0 +1,43 @@
+.container {
+  border: 2px solid green;
+  padding: 0;
+  margin: 5px;
+}
+
+.mmrTable {
+  width: 800px;
+  padding: 5px;
+}
+
+.mmrTable .mmrTableHeader {
+  font-weight: bold;
+}
+
+.mmrTable .textBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mmrTable .mmrCell {
+  width: 100px;
+}
+
+.mmrTable .gameTypeCell {
+  width: 200px;
+}
+
+.mmrTable .mmrValueCell {
+  text-align: center;
+}
+
+.mmrTable .mmrSourceCell {
+  width: 15px;
+  text-align: right;
+  font-size: small;
+}
+
+.mmrTableRow {
+  height: 40px;
+  margin: 0px;
+}

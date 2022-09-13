@@ -1,7 +1,7 @@
-<div class="container" style="border: 2px solid green">
-  <div class="row" style="border: 2px solid blue">
-    <div class="col" style="border: 2px solid cyan">
-      <form [formGroup]="matchUrlForm" (ngSubmit)="showParticipants()">
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <form [formGroup]="matchUrlForm" (ngSubmit)="getMatchData()">
         <label for="matchUrl" class="pb-2">Match URL:</label>
         <div class="input-group mb-3">
           <input
@@ -17,42 +17,9 @@
       </form>
     </div>
   </div>
-  <div class="row" style="border: 2px solid red; font-weight: bold">
-    <div class="col">Game type: {{ matchDTO.gameType }}</div>
-  </div>
-  <div class="row" style="border: 2px solid red">
-    <div class="col">
-      <div class="row">
-        <div class="col text-center" style="background-color: rgb(150, 150, 255); color: white;">Blue Team</div>
-        <div class="col text-center" style="background-color: rgb(255, 150, 150); color: white;">Red Team</div>
-      </div>
-      <div
-        class="row"
-        *ngFor="let matchRow of matchDTO.getRows(matchDTO.gameType)"
-      >
-        <div class="col" style="background-color: rgb(200, 200, 255)">
-          {{ matchRow.blue.name }}
-        </div>
-        <div class="col" style="background-color: rgb(180, 180, 255)">
-          {{ matchRow.blue.mmr }}
-        </div>
-        <div class="col" style="background-color: rgb(255, 180, 180)">
-          {{ matchRow.red.mmr }}
-        </div>
-        <div class="col" style="background-color: rgb(255, 200, 200)">
-          {{ matchRow.red.name }}
-        </div>
-      </div>
-      <div class="row" style="font-weight: bold">
-        <div class="col">Average team MMR:</div>
-        <div class="col">
-          {{ matchDTO.getAvgMmr(matchDTO.gameType).blue }}
-        </div>
-        <div class="col">
-          {{ matchDTO.getAvgMmr(matchDTO.gameType).red }}
-        </div>
-        <div class="col"></div>
-      </div>
+  <div class="row">
+    <div class="d-flex justify-content-center">
+      <app-mmr-table class="" [matchDTO]="matchDTO"></app-mmr-table>
     </div>
   </div>
 </div>
