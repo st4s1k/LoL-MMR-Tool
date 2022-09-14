@@ -28,6 +28,13 @@
       >
         Match not found!
       </ngb-alert>
+      <ngb-alert
+        [type]="'danger'"
+        *ngIf="matchUrlControl.errors?.['invalid-url']"
+        (closed)="matchUrlControl.setErrors({ 'invalid-url': false })"
+      >
+        Invalid url!
+      </ngb-alert>
     </form>
   </div>
   <div class="row">
