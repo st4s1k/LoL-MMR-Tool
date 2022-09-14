@@ -7,7 +7,7 @@ export class ScraperService {
   constructor(private http: HttpClient) {}
 
   // scraperUrl = 'http://127.0.0.1:8787/';
-  scraperUrl = 'https://scraper.psychoprolapse.workers.dev';
+  scraperUrl = 'https://scraper.psychoprolapse.com';
 
   scrape<R>(
     url: string,
