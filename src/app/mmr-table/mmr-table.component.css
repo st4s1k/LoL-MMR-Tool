@@ -1,12 +1,9 @@
 .container {
-  /* border: 2px solid green; */
   padding: 0;
-  /* margin: 5px; */
-}
-
-.mmrTable {
+  margin: 0;
   width: 800px;
-  /* padding: 5px; */
+  min-width: 800px;
+  max-width: none;
 }
 
 .mmrTable .mmrTableHeader {

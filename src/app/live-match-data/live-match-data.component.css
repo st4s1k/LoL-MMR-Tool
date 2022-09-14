@@ -1,12 +1,12 @@
 .container {
-  /* border: 2px solid green; */
   padding: 0;
-  /* margin-top: 5px; */
+  margin: 0;
+  width: 800px;
+  min-width: 800px;
+  max-width: none;
 }
 
 .container > .row {
-  /* border: 2px solid blue; */
-  /* margin: 5px; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -21,11 +21,3 @@
   width: 100px;
   flex: none;
 }
-
-/*
-.container > .row > .col,
-.container > .row > .col-auto {
-  border: 2px solid red;
-  margin: 5px;
-}
-*/
