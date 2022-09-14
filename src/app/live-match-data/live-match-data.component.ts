@@ -44,7 +44,7 @@ export class LiveMatchDataComponent implements OnInit {
       this.riotApiService
         .getSummonerByName(summonerName, region)
         .pipe(
-          catchError((error: HttpErrorResponse, caught) => {
+          catchError((error: HttpErrorResponse) => {
             if (error.status == 404) {
               this.summonerNameControl.setErrors({ 'summoner-not-found': true });
             }
@@ -52,7 +52,7 @@ export class LiveMatchDataComponent implements OnInit {
           }),
           mergeMap((summoner) =>
             this.riotApiService.getCurrentGameInfo(summoner.id, region).pipe(
-              catchError((error: HttpErrorResponse, caught) => {
+              catchError((error: HttpErrorResponse) => {
                 if (error.status == 404) {
                   this.summonerNameControl.setErrors({ 'game-not-found': true });
                 }

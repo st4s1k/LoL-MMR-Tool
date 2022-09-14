@@ -1,6 +1,8 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { Participant } from 'OPGGMatchInfo';
+import { catchError, of } from 'rxjs';
 import { MatchDTO } from '../mmr-table/model/MatchDTO';
 import { PlayerDTO } from '../mmr-table/model/PlayerDTO';
 import { WhatIsMyMMRService } from '../services/mmr-service';
@@ -31,6 +33,14 @@ export class MatchDataComponent implements OnInit {
     if (this.matchUrlControl.value) {
       this.opGGService
         .getMatchParticipants(this.matchUrlControl.value)
+        .pipe(
+          catchError((error: HttpErrorResponse) => {
+            if (error.status == 404) {
+              this.matchUrlControl.setErrors({ 'match-not-found': true });
+            }
+            return of();
+          })
+        )
         .subscribe((matchInfo) => {
           // console.log(matchInfo);
           if (
@@ -38,6 +48,7 @@ export class MatchDataComponent implements OnInit {
             matchInfo.props?.pageProps.error.status == 404
           ) {
             this.matchUrlControl.setErrors({ 'match-not-found': true });
+            return;
           }
           let participants = matchInfo.props?.pageProps.game.participants || [];
           let region = matchInfo.props?.pageProps.region;
