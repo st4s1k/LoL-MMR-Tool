@@ -1,25 +1,34 @@
 <div class="container">
-  <div class="row">
-    <div class="col-auto matchDataForm">
-      <form [formGroup]="matchUrlForm" (ngSubmit)="getMatchData()">
-        <label for="matchUrl" class="pb-2">
-          <a target=”_blank” href="https://www.op.gg/">OP.GG</a>
-          Match URL:
-        </label>
-        <div class="input-group mb-3">
-          <input
-            id="matchUrl"
-            formControlName="matchUrl"
-            type="text"
-            class="form-control"
-            placeholder="https://[region].op.gg/summoners/[region]/[summoner_name]/matches/[match_id]/[timestamp]"
-          />
-          <button class="button btn btn-outline-secondary" type="submit">
-            Load
-          </button>
-        </div>
-      </form>
-    </div>
+  <div class="row d-flex justify-content-center">
+    <form
+      class="matchDataForm"
+      [formGroup]="matchUrlForm"
+      (ngSubmit)="getMatchData()"
+    >
+      <label for="matchUrl" class="pb-2">
+        <a target="”_blank”" href="https://www.op.gg/">OP.GG</a>
+        Match URL:
+      </label>
+      <div class="input-group mb-3">
+        <input
+          id="matchUrl"
+          formControlName="matchUrl"
+          type="text"
+          class="form-control"
+          placeholder="https://[region].op.gg/summoners/[region]/[summoner_name]/matches/[match_id]/[timestamp]"
+        />
+        <button class="button btn btn-outline-secondary" type="submit">
+          Load
+        </button>
+      </div>
+      <ngb-alert
+        [type]="'danger'"
+        *ngIf="matchUrlControl.errors?.['match-not-found']"
+        (closed)="matchUrlControl.setErrors({ 'match-not-found': false })"
+      >
+        Match not found!
+      </ngb-alert>
+    </form>
   </div>
   <div class="row">
     <div class="d-flex justify-content-center">

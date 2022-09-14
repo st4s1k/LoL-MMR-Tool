@@ -150,9 +150,16 @@ declare module 'OPGGMatchInfo' {
     myData: MyData;
   }
 
+  export interface Error {
+    message: string;
+    status: number;
+    url: string;
+  }
+
   export interface PageProps {
     region: string;
     game: Game;
+    error: Error;
   }
 
   export interface Props {

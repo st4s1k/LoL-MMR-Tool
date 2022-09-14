@@ -1,7 +1,8 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CurrentGameInfo } from 'RiotApi';
-import { mergeMap } from 'rxjs';
+import { catchError, mergeMap, of } from 'rxjs';
 import { MatchDTO } from '../mmr-table/model/MatchDTO';
 import { PlayerDTO } from '../mmr-table/model/PlayerDTO';
 import { WhatIsMyMMRService } from '../services/mmr-service';
@@ -13,17 +14,21 @@ import { RiotApiService } from '../services/riot-api-service';
   styleUrls: ['./live-match-data.component.css'],
 })
 export class LiveMatchDataComponent implements OnInit {
-  public regions = ['EUW', 'NA', 'EUNE', 'KR'];
   public matchDTO: MatchDTO = new MatchDTO();
-  public summonerNameForm = this.formBuilder.group({
-    summonerName: '',
-    region: this.regions[0],
+
+  public regions = ['EUW', 'NA', 'EUNE', 'KR'];
+
+  public summonerNameControl = new FormControl('', Validators.required);
+  public regionControl = new FormControl(this.regions[0]);
+
+  public summonerNameForm = new FormGroup({
+    summonerName: this.summonerNameControl,
+    region: this.regionControl,
   });
 
   constructor(
     private whatIsMyMMRService: WhatIsMyMMRService,
-    private riotApiService: RiotApiService,
-    private formBuilder: FormBuilder
+    private riotApiService: RiotApiService
   ) {}
 
   ngOnInit(): void {}
@@ -33,14 +38,28 @@ export class LiveMatchDataComponent implements OnInit {
       this.summonerNameForm.value.summonerName &&
       this.summonerNameForm.value.region
     ) {
+      this.matchDTO = new MatchDTO();
       const region = this.summonerNameForm.value.region;
       const summonerName = this.summonerNameForm.value.summonerName;
       this.riotApiService
         .getSummonerByName(summonerName, region)
         .pipe(
-          mergeMap((summoner) => {
-            return this.riotApiService.getCurrentGameInfo(summoner.id, region);
-          })
+          catchError((error: HttpErrorResponse, caught) => {
+            if (error.status == 404) {
+              this.summonerNameControl.setErrors({ 'summoner-not-found': true });
+            }
+            return of();
+          }),
+          mergeMap((summoner) =>
+            this.riotApiService.getCurrentGameInfo(summoner.id, region).pipe(
+              catchError((error: HttpErrorResponse, caught) => {
+                if (error.status == 404) {
+                  this.summonerNameControl.setErrors({ 'game-not-found': true });
+                }
+                return of();
+              })
+            )
+          )
         )
         .subscribe((currentGameInfo) => {
           // console.log(currentGameInfo);

@@ -1,26 +1,44 @@
 <div class="container">
-  <div class="row">
-    <div class="col d-flex justify-content-center">
-      <form class="liveMatchDataForm" [formGroup]="summonerNameForm" (ngSubmit)="getMatchData()">
-        <div class="input-group mb-3 mt-3">
-          <input
-            id="summonerName"
-            formControlName="summonerName"
-            type="text"
-            class="form-control"
-            placeholder="Summoner name"
-          />
-          <select id="region" class="form-select" formControlName="region">
-            <option *ngFor="let region of regions; first as first">
-              {{ region }}
-            </option>
-          </select>
-          <button class="button btn btn-outline-secondary" type="submit">
-            Load
-          </button>
-        </div>
-      </form>
-    </div>
+  <div class="row d-flex justify-content-center">
+    <form
+      class="liveMatchDataForm"
+      [formGroup]="summonerNameForm"
+      (ngSubmit)="getMatchData()"
+    >
+      <div class="input-group mb-3 mt-3">
+        <input
+          id="summonerName"
+          formControlName="summonerName"
+          type="text"
+          class="form-control"
+          placeholder="Summoner name"
+        />
+        <select id="region" class="form-select" formControlName="region">
+          <option *ngFor="let region of regions; first as first">
+            {{ region }}
+          </option>
+        </select>
+        <button class="button btn btn-outline-secondary" type="submit">
+          Load
+        </button>
+      </div>
+      <ngb-alert
+        [type]="'danger'"
+        *ngIf="summonerNameControl.errors?.['summoner-not-found']"
+        (closed)="
+          summonerNameControl.setErrors({ 'summoner-not-found': false })
+        "
+      >
+        Summoner not found!
+      </ngb-alert>
+      <ngb-alert
+        [type]="'danger'"
+        *ngIf="summonerNameControl.errors?.['game-not-found']"
+        (closed)="summonerNameControl.setErrors({ 'game-not-found': false })"
+      >
+        Live game not found!
+      </ngb-alert>
+    </form>
   </div>
   <div class="row">
     <div class="d-flex justify-content-center">

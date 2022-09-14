@@ -1,9 +1,4 @@
 declare module 'RiotApi' {
-  export interface Status {
-    message: string;
-    status_code: number;
-  }
-
   export interface Summoner {
     id: string;
     accountId: string;
@@ -12,7 +7,6 @@ declare module 'RiotApi' {
     profileIconId: number;
     revisionDate: number;
     summonerLevel: number;
-    status: Status;
   }
 
   export interface BannedChampion {
@@ -61,6 +55,5 @@ declare module 'RiotApi' {
     gameQueueConfigId: number;
     observers: Observer;
     participants: CurrentGameParticipant[];
-    status: Status;
   }
 }

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { Participant } from 'OPGGMatchInfo';
-import { WhatIsMyMMRService } from '../services/mmr-service';
-import { OPGGService } from '../services/op-gg-service';
 import { MatchDTO } from '../mmr-table/model/MatchDTO';
 import { PlayerDTO } from '../mmr-table/model/PlayerDTO';
+import { WhatIsMyMMRService } from '../services/mmr-service';
+import { OPGGService } from '../services/op-gg-service';
 
 @Component({
   selector: 'app-match-data',
@@ -13,8 +13,9 @@ import { PlayerDTO } from '../mmr-table/model/PlayerDTO';
 })
 export class MatchDataComponent implements OnInit {
   public matchDTO: MatchDTO = new MatchDTO();
+  public matchUrlControl = new FormControl('');
   public matchUrlForm = this.formBuilder.group({
-    matchUrl: '',
+    matchUrl: this.matchUrlControl,
   });
 
   constructor(
@@ -26,24 +27,33 @@ export class MatchDataComponent implements OnInit {
   ngOnInit(): void {}
 
   getMatchData() {
-    var url = this.matchUrlForm.value?.matchUrl || '';
-    if (url.trim().length > 0) {
-      this.opGGService.getMatchParticipants(url).subscribe((matchInfo) => {
-        let participants = matchInfo.props?.pageProps.game.participants || [];
-        let region = matchInfo.props?.pageProps.region;
-        let gameType = matchInfo.props?.pageProps.game.queue_info.game_type;
-        if (region && gameType) {
-          this.matchDTO = this.populateMatchData(
-            participants,
-            region,
-            gameType
-          );
-        } else {
-          console.log(
-            `Undefined region [${region}] or game_type [${gameType}]`
-          );
-        }
-      });
+    this.matchDTO = new MatchDTO();
+    if (this.matchUrlControl.value) {
+      this.opGGService
+        .getMatchParticipants(this.matchUrlControl.value)
+        .subscribe((matchInfo) => {
+          // console.log(matchInfo);
+          if (
+            matchInfo.props?.pageProps.error &&
+            matchInfo.props?.pageProps.error.status == 404
+          ) {
+            this.matchUrlControl.setErrors({ 'match-not-found': true });
+          }
+          let participants = matchInfo.props?.pageProps.game.participants || [];
+          let region = matchInfo.props?.pageProps.region;
+          let gameType = matchInfo.props?.pageProps.game.queue_info.game_type;
+          if (region && gameType) {
+            this.matchDTO = this.populateMatchData(
+              participants,
+              region,
+              gameType
+            );
+          } else {
+            console.log(
+              `Undefined region [${region}] or game_type [${gameType}]`
+            );
+          }
+        });
     }
   }
 
